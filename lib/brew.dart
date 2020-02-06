@@ -26,6 +26,7 @@ class BrewPage extends StatelessWidget {
             backgroundColor: Colors.brown[300],
           ),
           body: Container(
+            color: Colors.brown[100],
             child: BrewTimer(
               mlRatio: mlRatio,
               dose: dose,
@@ -64,6 +65,8 @@ class _BrewTimerState extends State<BrewTimer> {
   double _total;
   int _mlRatio;
 
+  int _step = 1;
+
   @override
   void initState() {
     _total = widget.finalWeight;
@@ -93,15 +96,37 @@ class _BrewTimerState extends State<BrewTimer> {
   var stopwatch = new Stopwatch();
   String timeDisp = '00:00';
 
+  var secs;
+
   String brewInstruct() {
-    var secs = stopwatch.elapsed.inSeconds;
+    secs = stopwatch.elapsed.inSeconds;
 
     if (secs < 45) {
-      return 'Bloom ${_bloom.toStringAsFixed(1)}ml for ${45 - secs} seconds';
+      return 'Bloom ${_bloom.toStringAsFixed(1)}ml';
     } else if (secs >= 45 && secs < 75) {
-      return 'Pour to ${_firstPour.toStringAsFixed(1)}ml for ${75 - secs} seconds';
+      if (secs == 45) {
+        _step++;
+      }
+      return 'Pour to ${_firstPour.toStringAsFixed(1)}ml';
     } else if (secs >= 75 && secs < 105) {
-      return 'Pour to ${_total.toStringAsFixed(1)}ml for ${105 - secs} seconds';
+      if (secs == 75) {
+        _step++;
+      }
+      return 'Pour to ${_total.toStringAsFixed(1)}ml';
+    } else if (secs >= 105) {
+      return '';
+    }
+
+    return 'Error!';
+  }
+
+  String timeLeft() {
+    if (secs < 45) {
+      return "${45 - secs} seconds";
+    } else if (secs >= 45 && secs < 75) {
+      return '${75 - secs} seconds';
+    } else if (secs >= 75 && secs < 105) {
+      return '${105 - secs} seconds';
     } else if (secs >= 105) {
       return 'Done!';
     }
@@ -156,28 +181,99 @@ class _BrewTimerState extends State<BrewTimer> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(
-            top: 150.0,
-            bottom: 30.0,
+          decoration: BoxDecoration(
+              color: Colors.grey[300],
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20.0)),
+          margin: EdgeInsets.only(
+            top: 20.0,
+            bottom: 0,
+            right: 0,
+            left: 0,
           ),
-          child: Text(
-            timeDisp,
-            style: TextStyle(
-              fontSize: 50.0,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(
+                  top: 5.0,
+                  bottom: 0,
+                  right: 35.0,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(right: 69.0),
+                      child: Text(
+                        "Elapsed",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      constraints: BoxConstraints(
+                        maxHeight: 80.0,
+                      ),
+                      child: Text(
+                        //TIME Display
+                        timeDisp,
+                        style: TextStyle(
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                //Instructions
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          brewInstruct(),
+                          style: TextStyle(
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        child: Text(timeLeft(),
+                            style: TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w400,
+                            )),
+                      ),
+                    ]),
+              ),
+            ],
           ),
         ),
         Container(
-          padding: EdgeInsets.only(top: 5.0, bottom: 30.0),
-          child: Text(
-            brewInstruct(),
-            style: TextStyle(
-              fontSize: 30.0,
+            width: 500.0,
+            height: 70.0,
+            margin: EdgeInsets.symmetric(vertical: 7.0),
+            padding: EdgeInsets.symmetric(vertical: 3.0),
+            //constraints: BoxConstraints(minHeight: 50.0),
+            //alignment: AlignmentGeometry.,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.grey[300],
             ),
-            textAlign: TextAlign.center,
-          ),
-        ),
+            child: Text(
+              'Next:',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+              ),
+            )),
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
