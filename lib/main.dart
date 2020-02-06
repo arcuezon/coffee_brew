@@ -32,53 +32,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MethodRoute extends StatelessWidget {
-  const MethodRoute();
-
-  static const _methodNames = <String>[
-    'V60',
-    'Aeropress',
-    'Chemex',
-    'Wave 185',
-    'French Press',
-  ];
-
-  static const _imgLocs = <String>[
-    'assets/v60.png',
-    'assets/aeropress.png',
-    'assets/chemex.png',
-    'assets/wave.png',
-    'assets/press.png',
-  ];
-
-  Widget _buildMethodWidgets(List<Widget> methods) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) => methods[index],
-      itemCount: methods.length,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final methods = <Method>[];
-
-    for (int i = 0; i < _methodNames.length; i++) {
-      methods.add(Method(
-        methodName: _methodNames[i],
-        imgLoc: _imgLocs[i],
-      ));
-    }
-
-    final listview = Container(
-      color: Colors.transparent,
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: _buildMethodWidgets(methods),
-    );
-
-    return listview;
-  }
-}
-
 class Method extends StatelessWidget {
   final String methodName;
   final String imgLoc;
@@ -129,5 +82,52 @@ class Method extends StatelessWidget {
         height: 100.0,
       ),
     );
+  }
+}
+
+class MethodRoute extends StatelessWidget {
+  const MethodRoute();
+
+  static const _methodNames = <String>[
+    'V60',
+    'Aeropress',
+    'Chemex',
+    'Wave 185',
+    'French Press',
+  ];
+
+  static const _imgLocs = <String>[
+    'assets/v60.png',
+    'assets/aeropress.png',
+    'assets/chemex.png',
+    'assets/wave.png',
+    'assets/press.png',
+  ];
+
+  Widget _buildMethodWidgets(List<Widget> methods) {
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) => methods[index],
+      itemCount: methods.length,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final methods = <Method>[];
+
+    for (int i = 0; i < _methodNames.length; i++) {
+      methods.add(Method(
+        methodName: _methodNames[i],
+        imgLoc: _imgLocs[i],
+      ));
+    }
+
+    final listview = Container(
+      color: Colors.transparent,
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      child: _buildMethodWidgets(methods),
+    );
+
+    return listview;
   }
 }
