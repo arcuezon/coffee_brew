@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:screen/screen.dart';
 import 'dart:async';
 
@@ -120,6 +121,26 @@ class _BrewTimerState extends State<BrewTimer> {
     return 'Error!';
   }
 
+  String nextInstruct() {
+    switch (_step) {
+      case 1:
+        return 'Pour to ${_firstPour.toStringAsFixed(1)}ml';
+        break;
+
+      case 2:
+        return 'Pour to ${_total.toStringAsFixed(1)}ml';
+        break;
+
+      case 3:
+        return ' ';
+        break;
+
+      default:
+        return 'Out of scope: $_step';
+        break;
+    }
+  }
+
   String timeLeft() {
     if (secs < 45) {
       return "${45 - secs} seconds";
@@ -159,6 +180,7 @@ class _BrewTimerState extends State<BrewTimer> {
       print("stopSWatch");
     });
     Screen.keepOn(false);
+    _step = 1;
     stopwatch.reset();
     stopwatch.stop();
   }
@@ -181,27 +203,28 @@ class _BrewTimerState extends State<BrewTimer> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
+          height: 130.0,
           decoration: BoxDecoration(
               color: Colors.grey[300],
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(20.0)),
           margin: EdgeInsets.only(
-            top: 20.0,
-            bottom: 0,
+            top: 17.0,
+            bottom: 5.0,
             right: 0,
             left: 0,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(
                   top: 5.0,
                   bottom: 0,
-                  right: 35.0,
+                  right: 45.0,
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.only(right: 69.0),
@@ -256,25 +279,68 @@ class _BrewTimerState extends State<BrewTimer> {
           ),
         ),
         Container(
-            width: 500.0,
-            height: 70.0,
-            margin: EdgeInsets.symmetric(vertical: 7.0),
-            padding: EdgeInsets.symmetric(vertical: 3.0),
-            //constraints: BoxConstraints(minHeight: 50.0),
-            //alignment: AlignmentGeometry.,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(20.0),
-              color: Colors.grey[300],
-            ),
-            child: Text(
-              'Next:',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-              ),
-            )),
+          width: 500.0,
+          height: 90.0,
+          margin: EdgeInsets.symmetric(vertical: 7.0),
+          padding: EdgeInsets.symmetric(vertical: 3.0),
+          //constraints: BoxConstraints(minHeight: 50.0),
+          //alignment: AlignmentGeometry.,
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.grey[300],
+          ),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Next:',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                    Container(
+                        width: 150.0,
+                        child: Text(
+                          nextInstruct(),
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w400),
+                        ),
+                        margin: EdgeInsets.only(top: 5.0, right: 20.0)),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                        child: Text('Ratio: $_mlRatio',
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.w300))),
+                    Container(
+                        child: Text('Dose: $_dose',
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.w300))),
+                    Container(
+                        child: Text('Water: $_total',
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.w300))),
+                  ],
+                )
+              ]),
+        ),
         Container(
+          margin: EdgeInsets.only(
+            top: 20.0,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -315,15 +381,6 @@ class _BrewTimerState extends State<BrewTimer> {
             ],
           ),
         ),
-        Container(
-            padding: EdgeInsets.only(top: 40.0, bottom: 5),
-            child: Text('Ratio: $_mlRatio', style: TextStyle(fontSize: 20.0))),
-        Container(
-            padding: EdgeInsets.all(2.5),
-            child: Text('Dose: $_dose', style: TextStyle(fontSize: 20.0))),
-        Container(
-            padding: EdgeInsets.all(5),
-            child: Text('Water: $_total', style: TextStyle(fontSize: 20.0))),
       ],
     );
   }
