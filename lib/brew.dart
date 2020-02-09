@@ -115,6 +115,9 @@ class _BrewTimerState extends State<BrewTimer> {
       }
       return 'Pour to ${_total.toStringAsFixed(1)}ml';
     } else if (secs >= 105) {
+      if (secs == 105) {
+        _step++;
+      }
       return '';
     }
 
@@ -132,7 +135,11 @@ class _BrewTimerState extends State<BrewTimer> {
         break;
 
       case 3:
-        return ' ';
+        return 'Done!';
+        break;
+
+      case 4:
+        return '';
         break;
 
       default:
@@ -199,6 +206,7 @@ class _BrewTimerState extends State<BrewTimer> {
 
   @override
   Widget build(BuildContext buildContext) {
+    final _deviceWidth = MediaQuery.of(buildContext).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -215,13 +223,13 @@ class _BrewTimerState extends State<BrewTimer> {
             left: 0,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(
                   top: 5.0,
                   bottom: 0,
-                  right: 45.0,
+                  //right: 45.0,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -257,6 +265,7 @@ class _BrewTimerState extends State<BrewTimer> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
+                        width: _deviceWidth / 2,
                         child: Text(
                           brewInstruct(),
                           style: TextStyle(
