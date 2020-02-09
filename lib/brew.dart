@@ -280,7 +280,7 @@ class _BrewTimerState extends State<BrewTimer> {
         ),
         Container(
           width: 500.0,
-          height: 90.0,
+          height: 80.0,
           margin: EdgeInsets.symmetric(vertical: 7.0),
           padding: EdgeInsets.symmetric(vertical: 3.0),
           //constraints: BoxConstraints(minHeight: 50.0),
@@ -324,15 +324,15 @@ class _BrewTimerState extends State<BrewTimer> {
                     Container(
                         child: Text('Ratio: $_mlRatio',
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.w300))),
+                                fontSize: 15.0, fontWeight: FontWeight.w300))),
                     Container(
                         child: Text('Dose: $_dose',
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.w300))),
+                                fontSize: 15.0, fontWeight: FontWeight.w300))),
                     Container(
                         child: Text('Water: $_total',
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.w300))),
+                                fontSize: 15.0, fontWeight: FontWeight.w300))),
                   ],
                 )
               ]),
